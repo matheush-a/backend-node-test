@@ -35,4 +35,20 @@ describe('CSV File Store', () => {
 
     expect(response.status).toBe(422);
   });
+
+  it('should fail on post a null file', async () => {
+    let form = new FormData();
+    form.append('file', JSON.stringify(null));
+    let formHeaders = form.getHeaders();
+
+    const response = await axios.post('http://127.0.0.1:3000/api/files', form, {
+      headers: {
+        ...formHeaders,
+      },
+    }).catch(error => {
+      return error.response
+    });
+
+    expect(response.status).toBe(422);
+  });
 });
