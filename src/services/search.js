@@ -19,12 +19,12 @@ async function search(query) {
   let filteredUsers = [];
 
   usersArray.filter(function (user) {
-    if(
-      user.name.toLowerCase() === query
-      || user.city.toLowerCase() === query
-      || user.country.toLowerCase() === query
-      || user.favorite_sport.toLowerCase() === query
-    ) {
+    const matchCondition = user?.name?.toLowerCase() === query 
+    || user?.city?.toLowerCase() === query 
+    || user?.country?.toLowerCase() === query 
+    || user?.favorite_sport?.toLowerCase() === query;
+
+    if(matchCondition) {
       filteredUsers.push(user);
     }
   });
