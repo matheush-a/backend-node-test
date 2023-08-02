@@ -10,7 +10,7 @@ app.listen(port, () => {
 app.use('/api', routes);
 
 app.use((error, req, res, next) => {
-  const message = `Unexpected file key: ${error.field}, you must define it as "file"`;
+  const message = `Unexpected file key: ${error.field}, you must define it as 'file'`;
 
   return res.status(400).json({ message });
 });
