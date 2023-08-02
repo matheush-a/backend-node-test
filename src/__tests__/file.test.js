@@ -3,16 +3,68 @@ const axios = require('axios');
 const FormData = require('form-data');
 const { txtMock, csvMock } = require('../mocks/users.mock');
 
-describe('CSV File Store', () => {
-  it('should sucessfully post a csv file', async () => {
-    let form = new FormData();
-    form.append('file', JSON.stringify(csvMock));
-    let formHeaders = form.getHeaders();
+describe('Search query in .csv file', () => {
+  it('should sucessfully find a register by name', async () => {
+    const response = await axios.get('http://localhost:3000/api/users?q=John Doe')
+      .catch(error => {
+        return error.response
+      });
 
-    const response = await axios.post('http://127.0.0.1:3000/api/files', form, {
+    expect(response.status).toBe(200);
+  });
+
+  it('should sucessfully find a register by city', async () => {
+    const response = await axios.get('http://localhost:3000/api/users?q=London')
+      .catch(error => {
+        return error.response
+      });
+
+    expect(response.status).toBe(200);
+  });
+
+  it('should sucessfully find a register by country', async () => {
+    const response = await axios.get('http://localhost:3000/api/users?q=France')
+      .catch(error => {
+        return error.response
+      });
+
+    expect(response.status).toBe(200);
+  });
+
+  it('should sucessfully find a register by favorite_sport', async () => {
+    const response = await axios.get('http://localhost:3000/api/users?q=Basketball')
+      .catch(error => {
+        return error.response
+      });
+
+    expect(response.status).toBe(200);
+  });
+
+  it('should not find a register by any query', async () => {
+    const response = await axios.get('http://localhost:3000/api/users?q=Basketballs')
+      .catch(error => {
+        return error.response
+      });
+
+    expect(response.status).toBe(404);
+  });
+
+  it('should receive a bad request error on wrong named query key', async () => {
+    const response = await axios.get('http://localhost:3000/api/users?query=Basketballs')
+      .catch(error => {
+        return error.response
+      });
+
+    expect(response.status).toBe(400);
+  });
+});
+
+describe('Store .csv file', () => {
+  it('should sucessfully post a csv file', async () => {
+    const response = await axios.post('http://localhost:3000/api/files', { file: JSON.stringify(csvMock) }, {
       headers: {
-        ...formHeaders,
-      },
+        'content-type': 'multipart/form-data'
+      }
     }).catch(error => {
       return error.response
     });
@@ -21,13 +73,9 @@ describe('CSV File Store', () => {
   });
 
   it('should fail on post a non csv file', async () => {
-    let form = new FormData();
-    form.append('file', JSON.stringify(txtMock));
-    let formHeaders = form.getHeaders();
-
-    const response = await axios.post('http://127.0.0.1:3000/api/files', form, {
+    const response = await axios.post('http://localhost:3000/api/files', { file: JSON.stringify(txtMock) }, {
       headers: {
-        ...formHeaders,
+        'content-type': 'multipart/form-data'
       },
     }).catch(error => {
       return error.response
@@ -37,13 +85,9 @@ describe('CSV File Store', () => {
   });
 
   it('should fail on post a null file', async () => {
-    let form = new FormData();
-    form.append('file', JSON.stringify(null));
-    let formHeaders = form.getHeaders();
-
-    const response = await axios.post('http://127.0.0.1:3000/api/files', form, {
+    const response = await axios.post('http://localhost:3000/api/files', { file: JSON.stringify(null) }, {
       headers: {
-        ...formHeaders,
+        'content-type': 'multipart/form-data'
       },
     }).catch(error => {
       return error.response
@@ -53,13 +97,9 @@ describe('CSV File Store', () => {
   });
 
   it('should fail on post a file with an unexpected key', async () => {
-    let form = new FormData();
-    form.append('files', JSON.stringify(csvMock));
-    let formHeaders = form.getHeaders();
-
-    const response = await axios.post('http://127.0.0.1:3000/api/files', form, {
+    const response = await axios.post('http://localhost:3000/api/files', { files: JSON.stringify(csvMock) }, {
       headers: {
-        ...formHeaders,
+        'content-type': 'multipart/form-data'
       },
     }).catch(error => {
       return error.response
