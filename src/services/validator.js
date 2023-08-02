@@ -3,6 +3,8 @@ const validator = {
     if(file.mimetype !== 'text/csv') {
       return false;
     }
+
+    return true;
   }
 }
 
