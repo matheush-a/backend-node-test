@@ -26,5 +26,4 @@ router.get('/users', (req, res) => {
   FileController.GetCSVFile(req, res);
 });
 
-
 module.exports = router;
