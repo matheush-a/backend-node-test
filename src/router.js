@@ -5,8 +5,10 @@ const upload = require('./services/upload');
 const { validate } = require('./services/validator');
 
 router.post("/files", upload.single('file'), (req, res) => {
-  validate(req.file, res);
-  
+  if(!validate(req.file)) {
+    return res.status(422).json({ message: "File must be a .csv" });
+  }
+
   FileController.StoreCSVFile(req, res);
 });
 
