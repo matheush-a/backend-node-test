@@ -20,10 +20,10 @@ async function search(query) {
 
   usersArray.filter(function (user) {
     if(
-      user.name === query
-      || user.city === query
-      || user.country === query
-      || user.favorite_sport === query
+      user.name.toLowerCase() === query
+      || user.city.toLowerCase() === query
+      || user.country.toLowerCase() === query
+      || user.favorite_sport.toLowerCase() === query
     ) {
       filteredUsers.push(user);
     }

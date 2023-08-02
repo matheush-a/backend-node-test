@@ -15,7 +15,7 @@ const FileController = {
       return res.status(400).send('Invalid query provided, the key must be named as "q"');
     }
 
-    const filteredUsers = await search(query);
+    const filteredUsers = await search(query.toLowerCase());
 
     if(!filteredUsers || filteredUsers.length === 0) {
       return res.status(404).json(`Unable to find user matches for ${query ? query : 'the empty query'}.`);
