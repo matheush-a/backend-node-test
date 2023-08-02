@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
   },
   fileFilter: (req, file, cb) => {
     if(file.mimetype !== 'text/csv') {
-      return cb(new Error('file is not allowed'))
+      return cb(new Error('File is not allowed'))
     }
 
     cb(null, true)
